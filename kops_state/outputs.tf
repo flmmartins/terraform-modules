@@ -1,7 +1,7 @@
 output "kops_user" {
   description = "Map of Kops user with name,arn and id"
   value = {
-    "name" = module.kops_user.this_user_name
+    "name" = module.kops_user.this_iam_user_name
     "arn"  = module.kops_user.this_iam_user_arn
     "id"   = module.kops_user.this_iam_user_unique_id
   }
@@ -32,7 +32,7 @@ output "kops_state_bucket" {
     "id"                   = aws_s3_bucket.kops_state_bucket.id
     "arn"                  = aws_s3_bucket.kops_state_bucket.arn
     "region"               = aws_s3_bucket.kops_state_bucket.region
-    "domain_name"          = aws_s3_bucket.kops_state_bucket.domain_name
+    "domain_name"          = aws_s3_bucket.kops_state_bucket.bucket_domain_name
     "regional_domain_name" = aws_s3_bucket.kops_state_bucket.bucket_regional_domain_name
     "zone_id"              = aws_s3_bucket.kops_state_bucket.hosted_zone_id
   }

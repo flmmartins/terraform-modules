@@ -11,18 +11,19 @@ module "kops_user" {
   create_iam_access_key         = true
 }
 
-module "iam_group_with_policies" {
+module "kops_group" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-group-with-policies"
   version = "~> 2.0"
 
   name = "kops"
+  attach_iam_self_management_policy = false
 
   group_users = [
     module.kops_user.this_iam_user_name
   ]
 
   custom_group_policy_arns = [
-    "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
+    "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
     "arn:aws:iam::aws:policy/AmazonRoute53FullAccess",
     "arn:aws:iam::aws:policy/AmazonS3FullAccess",
     "arn:aws:iam::aws:policy/IAMFullAccess",
@@ -31,7 +32,7 @@ module "iam_group_with_policies" {
 }
 
 resource "aws_s3_bucket" "kops_state_bucket" {
-  bucket        = var.s3_state_name
+  bucket        = local.kops_state_name
   acl           = "private"
   force_destroy = true
 
@@ -57,7 +58,7 @@ resource "aws_s3_bucket" "kops_state_bucket" {
 
   tags = merge(
     var.env_tags,
-    local.module_tags
-    map ("infra.name", var.s3_state_name)
+    local.module_tags,
+    map ("infra.name", local.kops_state_name)
   )
 }

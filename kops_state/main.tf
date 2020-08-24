@@ -58,6 +58,6 @@ resource "aws_s3_bucket" "kops_state_bucket" {
   tags = merge(
     var.env_tags,
     local.module_tags
-    map ("infra.name", local.s3_state_name)
+    map ("infra.name", var.s3_state_name)
   )
 }

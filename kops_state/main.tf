@@ -1,36 +1,3 @@
-module "kops_user" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-user"
-  version = "~> 2.0"
-
-  name = "kops"
-  path = "services/"
-
-    # This allow terraform to destroy user even if user was changed manually
-  force_destroy                 = true
-  create_iam_user_login_profile = false
-  create_iam_access_key         = true
-}
-
-module "kops_group" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-group-with-policies"
-  version = "~> 2.0"
-
-  name = "kops"
-  attach_iam_self_management_policy = false
-
-  group_users = [
-    module.kops_user.this_iam_user_name
-  ]
-
-  custom_group_policy_arns = [
-    "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
-    "arn:aws:iam::aws:policy/AmazonRoute53FullAccess",
-    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
-    "arn:aws:iam::aws:policy/IAMFullAccess",
-    "arn:aws:iam::aws:policy/AmazonVPCFullAccess"
-  ]
-}
-
 resource "aws_s3_bucket" "kops_state_bucket" {
   bucket        = local.kops_state_name
   acl           = "private"
@@ -57,7 +24,7 @@ resource "aws_s3_bucket" "kops_state_bucket" {
   }
 
   tags = merge(
-    var.env_tags,
+    var.tags,
     local.module_tags,
     map ("infra.name", local.kops_state_name)
   )

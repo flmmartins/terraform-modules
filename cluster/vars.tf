@@ -21,13 +21,11 @@ variable "kubernetes_version" {
 
 variable "cluster_api_allowed_ip" {
   type = list
-  default = ["213.127.30.50/32"]
   description = "Ip address allowed to access KOPS API."
 }
 
 variable "cluster_ssh_allowed_ip" {
   type = list
-  default = ["213.127.30.50/32"]
   description = "Ip address allowed to SSH into kops."
 }
 

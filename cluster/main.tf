@@ -41,7 +41,6 @@ data "template_file" "cluster" {
     public_subnet_id       = data.aws_subnet.public_subnet.id
     non_masquerade_cidr    = var.kubernetes_cidr
     dns_type               = var.dns_type
-    dns_zone               = var.cluster_name
     nodes_type             = var.nodes["instance_type"]
     nodes_image            = var.nodes["image"]
     nodes_min_num          = var.nodes["min_count"]

@@ -47,7 +47,6 @@ spec:
     terraform.module.version: ${module_version}
   configBase: s3://${cluster_state_name}/${cluster_name}
   containerRuntime: docker
-  dnsZone: ${dns_zone}
   etcdClusters:
   - cpuRequest: 200m
     etcdMembers:
